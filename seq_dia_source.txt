@@ -1,35 +1,23 @@
 actor User
 User->Browser:
 Browser->jans-admin-ui: try to access `jans-admin-ui`
-
-jans-admin-ui-> jans-auth-server: redirect to the authorization-server for authentication
-
- jans-auth-server-->jans-admin-ui: code
-
-jans-admin-ui->jans-admin-ui-backend:request for `access_token` using `code`
-
-jans-admin-ui-backend-> jans-auth-server: request for `access_token` using `code`
-
- jans-auth-server-->jans-admin-ui-backend:access_token
-
-jans-admin-ui-backend->jans-admin-ui:send back the `access_token`
-
-jans-admin-ui-> jans-auth-server:request for `user-information` using `access_token`
-
- jans-auth-server-->jans-admin-ui:`user-information` (also containing `scopes` mapped to user's `Role`)
-
-jans-admin-ui->jans-admin-ui:Using `scopes` mapped to user's `Role`, the features on the UI can be turn on/off depending on the permissions.
-
-jans-admin-ui->jans-admin-ui-backend:request `api-token` (with `scopes`)
-
-jans-admin-ui-backend-> jans-auth-server:request `api-token` (with `scopes`)
-
- jans-auth-server-->jans-admin-ui-backend:api-token (with `scopes`)
-
-jans-admin-ui-backend->jans-admin-ui:api-token (with `scopes`)
-
-jans-admin-ui->jans-admin-ui:stores `api-token` in redux store
-
-jans-admin-ui->jans-config-api:access `jans-config-api` apis using `api-token` 
-
-jans-config-api-->jans-admin-ui: send api response if the required `scopes` are present in `api-token`
+jans-admin-ui-> jans-auth-server-1: redirect to the authorization-server for authentication
+jans-auth-server-1->jans-admin-ui: code, state
+jans-admin-ui->jans-admin-ui: verify state
+jans-admin-ui->jans-auth-server-1: request /token
+jans-auth-server-1->jans-admin-ui: access_token (AT1), id_token
+jans-admin-ui->jans-admin-ui-backend: AT1
+jans-admin-ui-backend->jans-auth-server-1: request /Userinfo
+jans-auth-server-1->jans-admin-ui-backend: Userinfo JWT (UJWT)
+jans-admin-ui-backend->jans-auth-server-2: request /token?userinfo=UJWT 
+jans-auth-server-2->jans-auth-server-2: Validate signature; map scopes based on roles
+jans-auth-server-2->jans-admin-ui-backend: access_token (AT2)
+jans-admin-ui-backend->jans-admin-ui: AT2
+User->Browser: do something
+Browser->jans-admin-ui:
+jans-admin-ui->jans-config-api: AT2
+jans-config-api<->jans-auth-server-2: introspect
+jans-auth-server-2->jans-config-api: AT2 JSON 
+jans-config-api->jans-config-api: Enforcement: verify required scopes
+jans-config-api->jans-config-api: do something
+jans-config-api->jans-admin-ui: result

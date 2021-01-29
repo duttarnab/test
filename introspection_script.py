@@ -82,11 +82,11 @@ class Introspection(IntrospectionType):
                 print "user-info jwt is valid"
                 # Get claims from parsed JWT
                 jwtClaims = userInfoJwt.getClaims()
-                userPermission = jwtClaims.getClaim("user_permission")
-                print userPermission
+                jansAdminUIRole = jwtClaims.getClaim("jansAdminUIRole")
+                print jansAdminUIRole.getString(0)
                 # role-scope mapping
                 scope = []
-                if userPermission == 'api-viewer':
+                if jansAdminUIRole.getString(0) == 'api-viewer':
                     scope.append("https://jans.io/oauth/config/attributes.readonly")
                     scope.append("https://jans.io/oauth/config/acrs.readonly")
                     scope.append("https://jans.io/oauth/config/scopes.readonly")
@@ -100,4 +100,3 @@ class Introspection(IntrospectionType):
                 print "Exception occured. Unable to resolve role/scope mapping."
                 print e
         return True
-

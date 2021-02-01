@@ -4,20 +4,33 @@ Browser->jans-admin-ui: try to access `jans-admin-ui`
 jans-admin-ui-> jans-auth-server-1: redirect to the authorization-server for authentication
 jans-auth-server-1->jans-admin-ui: code, state
 jans-admin-ui->jans-admin-ui: verify state
-jans-admin-ui->jans-auth-server-1: request /token
-jans-auth-server-1->jans-admin-ui: access_token (AT1), id_token
-jans-admin-ui->jans-admin-ui-backend: AT1
+jans-admin-ui->jans-admin-ui-backend: code
+jans-admin-ui-backend->jans-auth-server-1: request /token with code + client_creds 
+jans-auth-server-1->jans-admin-ui-backend: access_token (AT1), id_token, refresh_token
 jans-admin-ui-backend->jans-auth-server-1: request /Userinfo
 jans-auth-server-1->jans-admin-ui-backend: Userinfo JWT (UJWT)
+jans-admin-ui-backend->jans-admin-ui:UJWT/ Claims extracted from UJWT
+jans-admin-ui->jans-admin-ui: stores UJWT+Claims
+jans-admin-ui->jans-admin-ui-backend:request /api-protection-token?userinfo=UJWT
 jans-admin-ui-backend->jans-auth-server-2: request /token?userinfo=UJWT 
 jans-auth-server-2->jans-auth-server-2: Validate signature; map scopes based on roles
-jans-auth-server-2->jans-admin-ui-backend: access_token (AT2)
+jans-auth-server-2->jans-admin-ui-backend: api-protection-token (AT2) containing scopes
 jans-admin-ui-backend->jans-admin-ui: AT2
-User->Browser: do something
+jans-admin-ui->jans-admin-ui:extract scopes from AT2 (jwt)
+jans-admin-ui->jans-admin-ui:enable/disable UI features based on scopes from AT2
+User->Browser: do something (eg: click on view openid clients)
 Browser->jans-admin-ui:
-jans-admin-ui->jans-config-api: AT2
+jans-admin-ui->jans-admin-ui-backend:request /api-protection-token?userinfo=UJWT
+jans-admin-ui-backend->jans-auth-server-2: request /token?userinfo=UJWT 
+jans-auth-server-2->jans-auth-server-2: Validate signature; map scopes based on roles
+jans-auth-server-2->jans-admin-ui-backend: api-protection-token (AT2) containing scopes
+jans-admin-ui-backend->jans-admin-ui: AT2
+jans-admin-ui->jans-config-api: AT2+request params
 jans-config-api<->jans-auth-server-2: introspect
 jans-auth-server-2->jans-config-api: AT2 JSON 
 jans-config-api->jans-config-api: Enforcement: verify required scopes
-jans-config-api->jans-config-api: do something
+jans-config-api->jans-config-api: validate request params
+jans-config-api->jans-auth-server-1: request params
+jans-auth-server-1->jans-config-api: result 
+
 jans-config-api->jans-admin-ui: result

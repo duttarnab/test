@@ -15,8 +15,7 @@ jans-admin-ui->jans-admin-ui-backend:request /api-protection-token?userinfo=UJWT
 jans-admin-ui-backend->jans-auth-server-2: request /token?userinfo=UJWT 
 jans-auth-server-2->jans-auth-server-2: Validate signature; map scopes based on roles
 jans-auth-server-2->jans-admin-ui-backend: api-protection-token (AT2) containing scopes
-jans-admin-ui-backend->jans-admin-ui: AT2
-jans-admin-ui->jans-admin-ui:extract scopes from AT2 (jwt)
+jans-admin-ui-backend->jans-admin-ui: AT2 / scopes
 jans-admin-ui->jans-admin-ui:enable/disable UI features based on scopes from AT2
 User->Browser: do something (eg: click on view openid clients)
 Browser->jans-admin-ui:

@@ -43,6 +43,9 @@ class Introspection(IntrospectionType):
         try:
             # Getting user-info-jwt
             ujwt = context.getHttpRequest().getParameter("ujwt")
+            print ujwt
+            if not ujwt:
+                print "UJWT is empty or null"
             # Parse jwt
             userInfoJwt = Jwt.parse(ujwt)
             # Get auth-server keys
@@ -91,7 +94,7 @@ class Introspection(IntrospectionType):
                     scope.append("https://jans.io/oauth/config/acrs.readonly")
                     scope.append("https://jans.io/oauth/config/scopes.readonly")
                     scope.append("https://jans.io/oauth/config/scripts.readonly")
-                    scope.append("https://jans.io/oauth/config/clients.readonly")
+                    scope.append("https://jans.io/oauth/config/openid/clients.readonly")
                     scope.append("https://jans.io/oauth/config/smtp.readonly")
                     scope.append("https://jans.io/oauth/config/logging.readonly")
                     scope.append("https://jans.io/oauth/config/uma/resources.readonly")
@@ -110,8 +113,8 @@ class Introspection(IntrospectionType):
                     scope.append("https://jans.io/oauth/config/scopes.write")
                     scope.append("https://jans.io/oauth/config/scripts.readonly")
                     scope.append("https://jans.io/oauth/config/scripts.write")
-                    scope.append("https://jans.io/oauth/config/clients.readonly")
-                    scope.append("https://jans.io/oauth/config/clients.write")
+                    scope.append("https://jans.io/oauth/config/openid/clients.readonly")
+                    scope.append("https://jans.io/oauth/config/openid/clients.write")
                     scope.append("https://jans.io/oauth/config/smtp.readonly")
                     scope.append("https://jans.io/oauth/config/smtp.write")
                     scope.append("https://jans.io/oauth/config/logging.readonly")
@@ -142,9 +145,9 @@ class Introspection(IntrospectionType):
                     scope.append("https://jans.io/oauth/config/scripts.readonly")
                     scope.append("https://jans.io/oauth/config/scripts.write")
                     scope.append("https://jans.io/oauth/config/scripts.delete")
-                    scope.append("https://jans.io/oauth/config/clients.readonly")
-                    scope.append("https://jans.io/oauth/config/clients.write")
-                    scope.append("https://jans.io/oauth/config/clients.delete")
+                    scope.append("https://jans.io/oauth/config/openid/clients.readonly")
+                    scope.append("https://jans.io/oauth/config/openid/clients.write")
+                    scope.append("https://jans.io/oauth/config/openid/clients.delete")
                     scope.append("https://jans.io/oauth/config/smtp.readonly")
                     scope.append("https://jans.io/oauth/config/smtp.write")
                     scope.append("https://jans.io/oauth/config/smtp.delete")
@@ -178,9 +181,9 @@ class Introspection(IntrospectionType):
                     scope.append("https://jans.io/oauth/config/scripts.readonly")
                     scope.append("https://jans.io/oauth/config/scripts.write")
                     scope.append("https://jans.io/oauth/config/scripts.delete")
-                    scope.append("https://jans.io/oauth/config/clients.readonly")
-                    scope.append("https://jans.io/oauth/config/clients.write")
-                    scope.append("https://jans.io/oauth/config/clients.delete")
+                    scope.append("https://jans.io/oauth/config/openid/clients.readonly")
+                    scope.append("https://jans.io/oauth/config/openid/clients.write")
+                    scope.append("https://jans.io/oauth/config/openid/clients.delete")
                     scope.append("https://jans.io/oauth/config/smtp.readonly")
                     scope.append("https://jans.io/oauth/config/smtp.write")
                     scope.append("https://jans.io/oauth/config/smtp.delete")

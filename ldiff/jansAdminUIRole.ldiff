@@ -1,0 +1,23 @@
+version: 1
+dn: inum=0A01,ou=attributes,o=gluu
+objectClass: gluuAttribute
+objectClass: top
+description: jansAdminUIRole
+displayName: jansAdminUIRole
+gluuAttributeEditType: admin
+gluuAttributeEditType: user
+gluuAttributeName: jansAdminUIRole
+gluuAttributeOrigin: gluuCustomPerson
+gluuAttributeSystemEditType: admin
+gluuAttributeSystemEditType: user
+gluuAttributeType: string
+gluuAttributeViewType: admin
+gluuAttributeViewType: user
+gluuSAML1URI: urn:mace:dir:attribute-def:jansAdminUIRole
+gluuSAML2URI: urn:mace:dir:attribute-def:jansAdminUIRole
+gluuStatus: active
+inum: 0A01
+oxAuthClaimName: jansAdminUIRole
+oxMultivaluedAttribute: TRUE
+urn: sampleurn
+

@@ -1,0 +1,23 @@
+version: 1
+dn: inum=api-admin-b4541db3bb33061c38e3,ou=people,o=gluu
+objectClass: gluuCustomPerson
+objectClass: gluuPerson
+objectClass: top
+cn: Admin
+displayName: Admin
+emailVerified: TRUE
+givenName: Default Admin admin1
+gluuStatus: active
+inum: api-admin-b4541db3bb33061c38e3
+jansAdminUIRole: api-admin
+mail: apiadmin@gluu.org
+memberOf: inum=60B7,ou=groups,o=jans
+middleName: Default Admin admin1
+nickname: Default Admin admin1
+oxCreationTimestamp: 201902141656.114Z
+oxTrustEmail: {"value": "admin1", "display": null, "type": null, "primary": false}
+role: Admin
+sn: Admin
+uid: admin1
+userPassword:: e1NTSEF9Vy9SWnpMMmhjb0l4bkFBcXVaNHBjNks3UVZVbGxVSWk=
+

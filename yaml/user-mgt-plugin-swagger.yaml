@@ -8,7 +8,7 @@ info:
   license:
     name: Apache 2.0
     url: https://github.com/JanssenProject/jans/blob/main/LICENSE
-  version: '1.0.0'
+  version: "1.0"
 servers:
 - url: https://jans.io/
   description: The Jans server
@@ -268,6 +268,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomObjectAttribute'
+    ExtendedCustomUser:
+      allOf:     # Combines the CustomUser and the inline model
+        - $ref: '#/components/schemas/CustomUser'
+        - type: object
+          required:
+            - userPassword
+          properties:
+            userPassword:
+              type: string
+              description: User password            
   securitySchemes:
     oauth2:
       type: oauth2

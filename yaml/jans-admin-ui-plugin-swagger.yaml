@@ -19,543 +19,370 @@ tags:
 - name: Admin UI - Role-Permissions Mapping
 - name: Admin UI - License
 paths:
-  /admin-ui/oauth2/access-token:
-    get:
-      operationId: getAccessToken
-      parameters:
-      - name: code
-        in: query
-        schema:
-          type: string
-      responses:
-        default:
-          description: default response
-          content:
-            application/json: {}
-  /admin-ui/oauth2/api-protection-token:
-    get:
-      operationId: getApiProtectionToken
-      parameters:
-      - name: ujwt
-        in: query
-        schema:
-          type: string
-      responses:
-        default:
-          description: default response
-          content:
-            application/json: {}
-  /admin-ui/oauth2/config:
-    get:
-      operationId: getOAuth2Config
-      responses:
-        default:
-          description: default response
-          content:
-            application/json: {}
-  /admin-ui/oauth2/user-info:
-    post:
-      operationId: getUserInfo
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/UserInfoRequest'
-        required: true
-      responses:
-        default:
-          description: default response
-          content:
-            application/json: {}
-  /admin-ui/license/activateLicense:
-    post:
-      tags:
-      - Admin UI - License
-      summary: Activate license using license-key
-      description: Activate license using license-key
-      operationId: activate-adminui-license
-      requestBody:
-        description: LicenseRequest object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LicenseRequest'
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseApiResponse'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseApiResponse'
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseApiResponse'
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/license.write
-  /admin-ui/license/licenseDetails:
+  /jans-config-api/admin-ui/user/roles:
     get:
       tags:
-      - Admin UI - License
-      summary: Get admin ui license details
-      description: Get admin ui license details
-      operationId: get-adminui-license
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseResponse'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/license.readonly
-  /admin-ui/license/isActive:
-    get:
-      tags:
-      - Admin UI - License
-      summary: Check if admin-ui license is active
-      description: Check if admin-ui license is active
-      operationId: is-license-active
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseApiResponse'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseApiResponse'
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseApiResponse'
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/license.readonly
-  /admin-ui/license/saveApiCredentials:
-    post:
-      tags:
-      - Admin UI - License
-      summary: Save license api credentials
-      description: Save license api credentials
-      operationId: save-license-api-credentials
-      requestBody:
-        description: LicenseSpringCredentials object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LicenseSpringCredentials'
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseApiResponse'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseApiResponse'
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LicenseApiResponse'
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/license.write
-  /admin-ui/logging/audit:
-    post:
-      operationId: auditLogging
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              type: object
-              additionalProperties:
-                type: object
-        required: true
-      responses:
-        default:
-          description: default response
-          content:
-            application/json: {}
-  /admin-ui/user/permissions:
-    get:
-      tags:
-      - Admin UI - Permission
-      summary: Get admin ui permissions
-      description: Get admin ui permissions
-      operationId: get-adminui-permissions
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AdminPermission'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/permission.read
-    put:
-      tags:
-      - Admin UI - Permission
-      summary: Edit admin ui permissions
-      description: Edit admin ui permissions
-      operationId: edit-adminui-permission
-      requestBody:
-        description: AdminPermission object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPermission'
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AdminPermission'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/permission.write
-    post:
-      tags:
-      - Admin UI - Permission
-      summary: Add admin ui permissions
-      description: Add admin ui permissions
-      operationId: add-adminui-permission
-      requestBody:
-        description: AdminPermission object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPermission'
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AdminPermission'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/permission.write
-    delete:
-      tags:
-      - Admin UI - Permission
-      summary: Delete admin ui permissions
-      description: Delete admin ui permissions
-      operationId: delete-adminui-permission
-      requestBody:
-        description: AdminPermission object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPermission'
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AdminPermission'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/permission.write
-  /admin-ui/user/rolePermissionsMapping:
-    get:
-      tags:
-      - Admin UI - Role-Permissions Mapping
-      summary: Get admin ui role-permissions mapping
-      description: Get admin ui role-permissions mapping
-      operationId: get-adminui-role-permissions
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RolePermissionMapping'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/rolePermissionMapping.readonly
-    put:
-      tags:
-      - Admin UI - Role-Permissions Mapping
-      summary: Map permissions to role
-      description: Map permissions to role
-      operationId: map-permissions-to-role
-      requestBody:
-        description: RolePermissionMapping object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RolePermissionMapping'
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RolePermissionMapping'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/rolePermissionMapping.write
-    post:
-      tags:
-      - Admin UI - Role-Permissions Mapping
-      summary: Add role-permissions mapping
-      description: Add role-permissions mapping
-      operationId: add-role-permissions-mapping
-      requestBody:
-        description: RolePermissionMapping object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RolePermissionMapping'
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RolePermissionMapping'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/rolePermissionMapping.write
-    delete:
-      tags:
-      - Admin UI - Role-Permissions Mapping
-      summary: Remove role-permissions mapping
-      description: Remove role-permissions mapping
-      operationId: remove-role-permissions-permission
-      requestBody:
-        description: RolePermissionMapping object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RolePermissionMapping'
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RolePermissionMapping'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/rolePermissionMapping.write
-  /admin-ui/user/roles:
-    get:
-      tags:
-      - Admin UI - Role
-      summary: Get all admin ui roles
-      description: Get all admin ui roles
+        - Admin UI - Role
+      x-cli-plugin: admin-ui
+      summary: Get all admin ui roles.
+      description: Get all admin ui roles.
       operationId: get-adminui-roles
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/role.read]
       responses:
-        "200":
-          description: Ok
+        '200':
+          description: OK
           content:
             application/json:
               schema:
+                title: Get admin ui roles.
+                description: Get admin ui roles.
                 type: array
                 items:
                   $ref: '#/components/schemas/AdminRole'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/role.read
-    put:
-      tags:
-      - Admin UI - Role
-      summary: Edit admin ui role
-      description: Edit admin ui role
-      operationId: edit-adminui-role
-      requestBody:
-        description: AdminRole object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminRole'
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AdminRole'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/role.write
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     post:
       tags:
-      - Admin UI - Role
-      summary: Add admin ui role
-      description: Add admin ui role
+        - Admin UI - Role
+      x-cli-plugin: admin-ui
+      summary: Add admin ui role.
+      description: Add admin ui role.
       operationId: add-adminui-role
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/role.write]
       requestBody:
-        description: AdminRole object
+        content:
+          application/json:
+            schema:
+              required:
+                - role
+              $ref: '#/components/schemas/AdminRole'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Add admin ui role.
+                description: Add admin ui role.
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminRole'
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Admin UI - Role
+      x-cli-plugin: admin-ui
+      summary: Edit admin ui role.
+      description: Edit admin ui role.
+      operationId: edit-adminui-role
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/role.write]
+      requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminRole'
       responses:
-        "200":
-          description: Ok
+        '200':
+          description: OK
           content:
             application/json:
               schema:
+                title: Edit admin ui role.
+                description: Edit admin ui role.
                 type: array
                 items:
                   $ref: '#/components/schemas/AdminRole'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
-      security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/role.write
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     delete:
       tags:
-      - Admin UI - Role
-      summary: Delete admin ui role
-      description: Delete admin ui role
+        - Admin UI - Role
+      x-cli-plugin: admin-ui
+      summary: Delete admin ui role.
+      description: Delete admin ui role.
       operationId: delete-adminui-role
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/role.write]
       requestBody:
-        description: AdminRole object
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminRole'
       responses:
-        "200":
-          description: Ok
+        '200':
+          description: OK
           content:
             application/json:
               schema:
+                title: Delete admin ui role.
+                description: Delete admin ui role.
                 type: array
                 items:
                   $ref: '#/components/schemas/AdminRole'
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: InternalServerError
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /jans-config-api/admin-ui/user/permissions:
+    get:
+      tags:
+        - Admin UI - Permission
+      x-cli-plugin: admin-ui
+      summary: Get admin ui permissions.
+      description: Get admin ui permissions.
+      operationId: get-adminui-permissions
       security:
-      - oauth2:
-        - https://jans.io/oauth/jans-auth-server/config/adminui/user/role.write
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/permission.read]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Get admin ui permissions.
+                description: Get admin ui permissions.
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminPermission'
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Admin UI - Permission
+      x-cli-plugin: admin-ui
+      summary: Add admin ui permission.
+      description: Add admin ui permission.
+      operationId: add-adminui-permission
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/permission.write]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - permission
+              $ref: '#/components/schemas/AdminPermission'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Add admin ui permission.
+                description: Add admin ui permission.
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminPermission'
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Admin UI - Permission
+      x-cli-plugin: admin-ui
+      summary: Edit admin ui permission.
+      description: Edit admin ui permission.
+      operationId: edit-adminui-permission
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/permission.write]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPermission'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Edit admin ui permission.
+                description: Edit admin ui permission.
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminPermission'
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Admin UI - Permission
+      x-cli-plugin: admin-ui
+      summary: Delete admin ui permission.
+      description: Delete admin ui permission.
+      operationId: delete-adminui-permission
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/permission.write]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPermission'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Delete admin ui permission.
+                description: Delete admin ui permission.
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminPermission'
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /jans-config-api/admin-ui/user/rolePermissionsMapping:
+    get:
+      tags:
+        - Admin UI - Role-Permissions Mapping
+      x-cli-plugin: admin-ui
+      summary: Get admin ui role-permissions mapping.
+      description: Get admin ui role-permissions mapping.
+      operationId: get-adminui-role-permissions
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/rolePermissionMapping.readonly]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Get admin ui role-permissions mapping.
+                description: Get admin ui role-permissions mapping.
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolePermissionMapping'
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Admin UI - Role-Permissions Mapping
+      x-cli-plugin: admin-ui
+      summary: Add role-permissions mapping.
+      description: Add role-permissions mapping.
+      operationId: Add role-permissions mapping.
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/rolePermissionMapping.write]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolePermissionMapping'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Add role-permissions mapping.
+                description: Add role-permissions mapping.
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolePermissionMapping'
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Admin UI - Role-Permissions Mapping
+      x-cli-plugin: admin-ui
+      summary: Map permissions to role.
+      description: Map permissions to role.
+      operationId: map-permissions-to-role
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/rolePermissionMapping.write]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolePermissionMapping'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Map permissions to role.
+                description: Map permissions to role.
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolePermissionMapping'
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Admin UI - Role-Permissions Mapping
+      x-cli-plugin: admin-ui
+      summary: Remove role-permissions mapping.
+      description: Remove role-permissions mapping.
+      operationId: remove-role-permissions-permission
+      security:
+        - oauth2: [https://jans.io/oauth/jans-auth-server/config/adminui/user/rolePermissionMapping.write]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolePermissionMapping'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Remove role-permissions mapping.
+                description: Remove role-permissions mapping.
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolePermissionMapping'
+        '400':
+          $ref: '#/components/responses/NotAcceptable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
     UserInfoRequest:
